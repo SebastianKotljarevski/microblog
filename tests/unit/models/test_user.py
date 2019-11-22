@@ -47,7 +47,7 @@ def test_avatar(_mock_current_app, user1):
                                  'd4c74594d841139328695756648b6bd6'
                                  '?d=retro&s=128')
 
-def test_follow(self):
+def test_follow(test_app):
     u1 = User(username='john', email='john@example.com')
     u2 = User(username='susan', email='susan@example.com')
     db.session.add(u1)
@@ -66,11 +66,11 @@ def test_follow(self):
 
     u1.unfollow(u2)
     db.session.commit()
-    assert u1.is_following(u2)
+    assert not u1.is_following(u2)
     assert u1.followed.count() == 0
     assert u2.followers.count() == 0
 
-def test_follow_posts(self):
+def test_follow_posts(test_app):
     # create four users
     u1 = User(username='john', email='john@example.com')
     u2 = User(username='susan', email='susan@example.com')
