@@ -2,6 +2,7 @@
 Contains tests for app.models.User class
 """
 # pylint: disable=redefined-outer-name
+# pylint: disable=W0613
 from unittest import mock
 from datetime import datetime, timedelta
 import pytest
@@ -48,6 +49,9 @@ def test_avatar(_mock_current_app, user1):
                                  '?d=retro&s=128')
 
 def test_follow(test_app):
+    """
+    test follow
+    """
     u1 = User(username='john', email='john@example.com')
     u2 = User(username='susan', email='susan@example.com')
     db.session.add(u1)
@@ -71,6 +75,9 @@ def test_follow(test_app):
     assert u2.followers.count() == 0
 
 def test_follow_posts(test_app):
+    """
+    test follow posts
+    """
     # create four users
     u1 = User(username='john', email='john@example.com')
     u2 = User(username='susan', email='susan@example.com')
