@@ -9,7 +9,7 @@ services:
       - MYSQL_DATABASE=microblog
       - MYSQL_USER=microblog
       - MYSQL_PASSWORD=1441
-  prod:
+  dev:
     build:
       context: .
       dockerfile: docker/Dockerfile_prod
@@ -20,6 +20,28 @@ services:
       - DATABASE_URL=mysql+pymysql://microblog:1441@dev_mysql/microblog
     ports:
       - 8000:5000
+
+  prod_mysql:
+    image: mysql/mysql-server:5.7
+    expose:
+      - 5000
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=microblog
+      - MYSQL_USER=microblog
+      - MYSQL_PASSWORD=1441
+   prod:
+     image:
+       keffsiba/microblog_prod:latest
+     links:
+       - dev_mysql
+     environment:
+       - SECRET_KEY=my-secret-key
+       - DATABASE_URL=mysql+pymysql://microblog:1441@prod_mysql/microblog
+     ports:
+       - 8000:5000
+     restart:
+       always
 
   test_mysql:
     image: mysql/mysql-server:5.7
