@@ -1,0 +1,41 @@
+version: '3'
+services:
+  dev_mysql:
+    image: mysql/mysql-server:5.7
+    expose:
+      - 5000
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=microblog
+      - MYSQL_USER=microblog
+      - MYSQL_PASSWORD=1441
+  prod:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile_prod
+    links:
+      - dev_mysql
+    environment:
+      - SECRET_KEY=my-secret-key
+      - DATABASE_URL=mysql+pymysql://microblog:1441@dev_mysql/microblog
+    ports:
+      - 8000:5000
+
+  test_mysql:
+    image: mysql/mysql-server:5.7
+    expose:
+      - 5000
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=microblog
+      - MYSQL_USER=microblog
+      - MYSQL_PASSWORD=1441
+  test:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile_test
+    links:
+      - test_mysql
+    environment:
+      - SECRET_KEY=my-secret-key
+      - DATABASE_URL=mysql+pymysql://microblog:1441@test_mysql/microblog

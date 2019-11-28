@@ -1,26 +1,39 @@
-# Python CircleCI 2.0 configuration file
-version: 2
-jobs:
-  build:
-    docker:
-      - image: circleci/python:3.7
-
-    working_directory: ~/repo
-
-    steps:
-      # Step 1: obtain repo from GitHub
-      - checkout
-      # Step 2: create virtual env and install dependencies
-      - run:
-          name: install dependencies
-          command: |
-            python3 -m venv venv
-            . venv/bin/activate
-            make install-test
-
-      # Step 3: run linter and testspip install -r requirements/test.txt
-      - run:
-          name: run tests
-          command: |
-            . venv/bin/activate
-            make test
+    version: 3
+    jobs:
+      build:
+        environment:
+          IMAGE_NAME: keffsiba/microblog_prod
+        docker:
+          - image: circleci/buildpack-deps:stretch
+        steps:
+          - checkout
+          - setup_remote_docker
+          - run:
+              name: Build Docker image
+              command: docker build -t $IMAGE_NAME:latest .
+      publish-latest:
+        environment:
+          IMAGE_NAME: building-on-ci
+        docker:
+          - image: circleci/buildpack-deps:stretch
+        steps:
+          - setup_remote_docker
+          - run:
+              name: Publish Docker Image to Docker Hub
+              command: |
+                echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+                docker push $IMAGE_NAME:latest
+    workflows:
+      version: 3
+      build-master:
+        jobs:
+          - build:
+              filters:
+                branches:
+                  only: master
+          - publish-latest:
+              requires:
+                - build
+              filters:
+                branches:
+                  only: master
