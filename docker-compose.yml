@@ -30,18 +30,19 @@ services:
       - MYSQL_DATABASE=microblog
       - MYSQL_USER=microblog
       - MYSQL_PASSWORD=1441
-   prod:
-     image:
-       keffsiba/microblog_prod:latest
-     links:
-       - dev_mysql
-     environment:
-       - SECRET_KEY=my-secret-key
-       - DATABASE_URL=mysql+pymysql://microblog:1441@prod_mysql/microblog
-     ports:
-       - 8000:5000
-     restart:
-       always
+
+  prod:
+    image:
+      keffsiba/microblog_prod:latest
+    links:
+      - prod_mysql
+    environment:
+      - SECRET_KEY=my-secret-key
+      - DATABASE_URL=mysql+pymysql://microblog:1441@prod_mysql/microblog
+    ports:
+      - 8000:5000
+    restart:
+      always
 
   test_mysql:
     image: mysql/mysql-server:5.7
