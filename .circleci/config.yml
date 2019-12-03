@@ -19,6 +19,9 @@ jobs:
             . venv/bin/activate
             make install-test
       - run:
+          name: Run tests
+          command: make exec-tests validate
+      - run:
           name: Build Docker image
           command: |
             docker build -f docker/Dockerfile_prod -t $IMAGE_NAME:latest .
