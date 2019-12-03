@@ -12,8 +12,8 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: Run test
-          command: make test
+          name: Install requirements
+          command: make install-test
       - run:
           name: Build Docker image
           command: |
