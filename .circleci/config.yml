@@ -12,15 +12,8 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: Install requirements
-          command: |
-            sudo apt-get install python3-venv
-            python3 -m venv venv
-            . venv/bin/activate
-            make install-test
-      - run:
           name: Run tests
-          command: make exec-tests validate
+          command: make test
       - run:
           name: Build Docker image
           command: |
