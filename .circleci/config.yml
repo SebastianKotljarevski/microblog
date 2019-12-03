@@ -12,7 +12,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: Run tests
+          name: Run test
           command: make test
       - run:
           name: Build Docker image
