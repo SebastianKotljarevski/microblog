@@ -12,8 +12,11 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
+          name: Validate
+          command: make validate
+      - run:
           name: Run tests
-          command: make test validate
+          command: make exec-tests
       - run:
           name: Build Docker image
           command: |
