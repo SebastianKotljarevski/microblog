@@ -12,9 +12,6 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: Validate
-          command: make install-test validate
-      - run:
           name: Run tests
           command: make exec-tests
       - run:
