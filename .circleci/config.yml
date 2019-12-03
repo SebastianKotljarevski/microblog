@@ -13,7 +13,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Run tests
-          command: make test
+          command: make test validate
       - run:
           name: Build Docker image
           command: |
