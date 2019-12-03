@@ -13,7 +13,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Validate
-          command: make validate
+          command: make install-test validate
       - run:
           name: Run tests
           command: make exec-tests
