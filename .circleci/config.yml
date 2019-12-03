@@ -13,7 +13,7 @@ jobs:
       - setup_remote_docker
       - run:
           name: Install requirements
-          command:
+          command: |
               python -m virtualenv venv
               . venv/bin/activate
               make install-test
